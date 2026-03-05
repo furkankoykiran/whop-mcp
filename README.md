@@ -4,6 +4,12 @@
 
 # whop-mcp
 
+<div align="center">
+  <img src="https://img.shields.io/npm/v/whop-mcp?color=blue&style=for-the-badge" alt="NPM Version" />
+  <img src="https://img.shields.io/npm/dt/whop-mcp?color=green&style=for-the-badge" alt="NPM Downloads" />
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge" alt="License: MIT" /></a>
+</div>
+
 A community-built **Model Context Protocol (MCP) server** for the [Whop.com](https://whop.com) Company API. It enables AI assistants (Claude, Cursor, etc.) to fully manage your Whop business — payments, memberships, products, promo codes, affiliates, and more.
 
 ## ✨ Features
@@ -83,7 +89,63 @@ A community-built **Model Context Protocol (MCP) server** for the [Whop.com](htt
 
 ---
 
-## ⚙️ Installation
+## ⚙️ Quick Start
+
+### Install in VS Code
+Install the whop-mcp server in VS Code with one click:
+
+[<img alt="Install in VS Code" src="https://img.shields.io/badge/VS_Code-Install_Server-0098FF?style=for-the-badge&logo=visualstudiocode&logoColor=white" />](https://insiders.vscode.dev/redirect?url=vscode%3Amcp%2Finstall%3F%7B%22name%22%3A%22whop%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22whop-mcp%22%5D%2C%22env%22%3A%7B%22WHOP_API_KEY%22%3A%22YOUR_WHOP_API_KEY_HERE%22%7D%7D)
+
+> **Note:** Replace `YOUR_WHOP_API_KEY_HERE` with your actual Company API key from the Whop Developer Dashboard.
+
+### Install in Claude Desktop
+Add to your Claude Desktop config file:
+
+**macOS/Linux**: `~/.config/claude/claude_desktop_config.json`  
+**Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+
+```json
+{
+  "mcpServers": {
+    "whop": {
+      "command": "npx",
+      "args": ["-y", "whop-mcp"],
+      "env": {
+        "WHOP_API_KEY": "YOUR_WHOP_API_KEY_HERE"
+      }
+    }
+  }
+}
+```
+
+### Install in Cursor
+Add to your Cursor MCP settings (`Cursor Settings -> MCP Servers`):
+
+```json
+{
+  "whop": {
+    "command": "npx",
+    "args": ["-y", "whop-mcp"],
+    "env": {
+      "WHOP_API_KEY": "YOUR_WHOP_API_KEY_HERE"
+    }
+  }
+}
+```
+
+---
+
+## 🔑 Getting Your API Key
+
+1. Go to [https://whop.com/dashboard/developer](https://whop.com/dashboard/developer)
+2. Click **Create** in the **Company API Keys** section
+3. Give your key a name (e.g. "Claude Integration")
+4. Select the appropriate permissions (Payments, Memberships, Products, etc.)
+5. Copy the key — you'll never see it again!
+
+---
+
+## ⚙️ Alternative Installation
 
 ### Option A: Use via npx (no install needed)
 
@@ -106,57 +168,6 @@ cd whop-mcp
 npm install
 npm run build
 WHOP_API_KEY=your_key npm start
-```
-
----
-
-## 🔑 Getting Your API Key
-
-1. Go to [https://whop.com/dashboard/developer](https://whop.com/dashboard/developer)
-2. Click **Create** in the **Company API Keys** section
-3. Give your key a name (e.g. "Claude Integration")
-4. Select the appropriate permissions (Payments, Memberships, Products, etc.)
-5. Copy the key — you'll never see it again!
-
----
-
-## 🤖 Adding to Claude Desktop
-
-Add this to your Claude Desktop config file:
-
-**macOS/Linux**: `~/.config/claude/claude_desktop_config.json`  
-**Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
-
-```json
-{
-  "mcpServers": {
-    "whop": {
-      "command": "npx",
-      "args": ["whop-mcp"],
-      "env": {
-        "WHOP_API_KEY": "YOUR_WHOP_API_KEY_HERE"
-      }
-    }
-  }
-}
-```
-
-## 🖱️ Adding to Cursor
-
-1. Open Cursor Settings → **MCP Servers**
-2. Click **Add new global MCP server**
-3. Paste:
-
-```json
-{
-  "whop": {
-    "command": "npx",
-    "args": ["whop-mcp"],
-    "env": {
-      "WHOP_API_KEY": "YOUR_WHOP_API_KEY_HERE"
-    }
-  }
-}
 ```
 
 ---
