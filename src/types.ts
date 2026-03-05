@@ -13,11 +13,8 @@ export interface PaginatedResponse<T> {
     data: T[];
     pagination: {
         current_page: number;
-        per: number;
+        total_page: number;
         total_count: number;
-        total_pages: number;
-        next_page: number | null;
-        prev_page: number | null;
     };
 }
 
@@ -82,10 +79,11 @@ export interface Membership {
 export interface Product {
     id: string;
     name: string;
+    title?: string;
     visibility: string;
     created_at: number;
-    experiences: Experience[];
-    plans: Plan[];
+    experiences: (Experience | string)[];
+    plans: (Plan | string)[];
     company_id: string;
     image: string | null;
     description: string | null;
@@ -104,12 +102,14 @@ export interface Experience {
 export interface Plan {
     id: string;
     name: string | null;
-    billing_period: string;
-    renewal_price: number;
-    initial_price: number;
-    currency: string;
+    billing_period: string | null;
+    renewal_price: number | string;
+    initial_price: number | string;
+    currency?: string;
+    base_currency?: string;
     visibility: string;
-    product_id: string;
+    product_id?: string;
+    product?: string;
     created_at: number;
 }
 
