@@ -3,7 +3,7 @@
 // ============================================================
 
 import { z } from "zod";
-import { whopGet, whopPost, whopPatch, whopDelete, formatApiError } from "../client.js";
+import { whopGet, whopPost, whopPatch, whopDelete, formatApiError, safeDate } from "../client.js";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { PromoCode, PaginatedResponse } from "../types.js";
 
@@ -29,11 +29,11 @@ export function registerPromoCodeTools(server: McpServer): void {
                 const codes = data.data;
 
                 const lines = [
-                    `**Promo Codes** (Page ${data.pagination.current_page}/${data.pagination.total_pages}, Total: ${data.pagination.total_count})`,
+                    `**Promo Codes** (Page ${data.pagination.current_page}/${data.pagination.total_page}, Total: ${data.pagination.total_count})`,
                     "",
                     ...codes.map(
                         (c) =>
-                            `- **\`${c.code}\`** (\`${c.id}\`) | ${c.discount_type === "dollar" ? `$${(c.discount_amount / 100).toFixed(2)}` : `${c.discount_amount}%`} off | Status: \`${c.status}\` | Used: ${c.used_count}${c.quantity !== null ? `/${c.quantity}` : ""} | Expires: ${c.expiry_date ? new Date(c.expiry_date * 1000).toISOString() : "Never"}`
+                            `- **\`${c.code}\`** (\`${c.id}\`) | ${c.discount_type === "dollar" ? `$${(c.discount_amount / 100).toFixed(2)}` : `${c.discount_amount}%`} off | Status: \`${c.status}\` | Used: ${c.used_count}${c.quantity !== null ? `/${c.quantity}` : ""} | Expires: ${safeDate(c.expiry_date)}`
                     ),
                 ];
 
@@ -62,10 +62,10 @@ export function registerPromoCodeTools(server: McpServer): void {
                     `- Discount: ${c.discount_type === "dollar" ? `${(c.discount_amount / 100).toFixed(2)} ${(c.currency ?? "USD").toUpperCase()}` : `${c.discount_amount}%`}`,
                     `- Status: \`${c.status}\``,
                     `- Used: ${c.used_count} / ${c.unlimited ? "Unlimited" : (c.quantity ?? "N/A")}`,
-                    `- Expiry: ${c.expiry_date ? new Date(c.expiry_date * 1000).toISOString() : "Never"}`,
+                    `- Expiry: ${safeDate(c.expiry_date)}`,
                     `- Products: ${c.products?.join(", ") ?? "All"}`,
                     `- Plans: ${c.plans?.join(", ") ?? "All"}`,
-                    `- Created: ${new Date(c.created_at * 1000).toISOString()}`,
+                    `- Created: ${c.created_at ? safeDate(c.created_at) : "N/A"}`,
                 ].join("\n");
                 return { content: [{ type: "text", text }] };
             } catch (err) {
@@ -167,7 +167,7 @@ export function registerPromoCodeTools(server: McpServer): void {
                     content: [
                         {
                             type: "text",
-                            text: `✅ Promo code **\`${c.code}\`** (\`${c.id}\`) updated.\n- Status: \`${c.status}\`\n- Expires: ${c.expiry_date ? new Date(c.expiry_date * 1000).toISOString() : "Never"}`,
+                            text: `✅ Promo code **\`${c.code}\`** (\`${c.id}\`) updated.\n- Status: \`${c.status}\`\n- Expires: ${safeDate(c.expiry_date)}`,
                         },
                     ],
                 };

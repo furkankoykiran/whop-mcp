@@ -3,7 +3,7 @@
 // ============================================================
 
 import { z } from "zod";
-import { whopGet, formatApiError } from "../client.js";
+import { whopGet, formatApiError, safeDate } from "../client.js";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { Affiliate, PaginatedResponse } from "../types.js";
 
@@ -29,7 +29,7 @@ export function registerAffiliateTools(server: McpServer): void {
                 const affiliates = data.data;
 
                 const lines = [
-                    `**Affiliates** (Page ${data.pagination.current_page}/${data.pagination.total_pages}, Total: ${data.pagination.total_count})`,
+                    `**Affiliates** (Page ${data.pagination.current_page}/${data.pagination.total_page}, Total: ${data.pagination.total_count})`,
                     "",
                     ...affiliates.map(
                         (a) =>
@@ -66,7 +66,7 @@ export function registerAffiliateTools(server: McpServer): void {
                     `- Pending Earnings: $${(a.pending_earnings / 100).toFixed(2)}`,
                     `- Paid Earnings: $${(a.paid_earnings / 100).toFixed(2)}`,
                     `- Total Sales: ${a.total_sales}`,
-                    `- Created: ${new Date(a.created_at * 1000).toISOString()}`,
+                    `- Created: ${safeDate(a.created_at)}`,
                 ].join("\n");
                 return { content: [{ type: "text", text }] };
             } catch (err) {
