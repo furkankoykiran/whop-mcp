@@ -1,0 +1,107 @@
+name: 🐛 Bug Report
+description: Report a bug or unexpected behavior in whop-mcp
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill out the form below as completely as possible.
+        
+        > ⚠️ **Note:** This is a community-led project, not an official Whop.com product.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is.
+      placeholder: "When I call the `list_payments` tool with the `status` filter, it returns..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: Step-by-step instructions to reproduce the behavior.
+      placeholder: |
+        1. Set WHOP_API_KEY to a valid key
+        2. Call tool `list_payments` with params { status: 'paid' }
+        3. Observe error...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened? Include error messages or logs.
+    validations:
+      required: true
+
+  - type: input
+    id: tool-name
+    attributes:
+      label: Affected Tool(s)
+      description: Which MCP tool(s) are affected? (e.g. `list_payments`, `validate_license`)
+      placeholder: "list_payments"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: node-version
+    attributes:
+      label: Node.js Version
+      options:
+        - "18.x"
+        - "20.x"
+        - "22.x"
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: whop-mcp-version
+    attributes:
+      label: whop-mcp Version
+      description: Run `npx whop-mcp --version` or check package.json
+      placeholder: "1.0.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating System
+      options:
+        - macOS
+        - Linux
+        - Windows
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: mcp-client
+    attributes:
+      label: MCP Client
+      description: Which MCP client are you using?
+      options:
+        - Claude Desktop
+        - Cursor
+        - Other
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other context, screenshots, or information that might be helpful.

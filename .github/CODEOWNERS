@@ -1,0 +1,17 @@
+# CODEOWNERS
+# Each line specifies a pattern and the owner(s) for matching files.
+# Owners are automatically requested for review when a PR touches their files.
+
+# Default owner for all files
+* @furkankoykiran
+
+# Core source files
+/src/ @furkankoykiran
+
+# CI/CD workflows require careful review
+/.github/workflows/ @furkankoykiran
+
+# Community health files
+/CODE_OF_CONDUCT.md @furkankoykiran
+/CONTRIBUTING.md @furkankoykiran
+/SECURITY.md @furkankoykiran

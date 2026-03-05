@@ -1,0 +1,53 @@
+name: 🚀 Feature Request
+description: Suggest a new tool, endpoint, or improvement for whop-mcp
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have an idea to make whop-mcp better? We'd love to hear it!
+        
+        > ⚠️ **Note:** This is a community-led project, not an official Whop.com product.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or Use Case
+      description: What problem does this feature solve? What are you trying to do?
+      placeholder: "I want to be able to manage webhooks from my AI assistant, but there's no tool for it..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the tool or feature you'd like to see.
+      placeholder: |
+        A `list_webhooks` tool that calls GET /webhooks and returns...
+        A `create_webhook` tool that calls POST /webhooks with params...
+    validations:
+      required: true
+
+  - type: input
+    id: api-endpoint
+    attributes:
+      label: Related Whop API Endpoint
+      description: Link to the Whop API documentation for this endpoint, if applicable.
+      placeholder: "https://dev.whop.com/api-reference/webhooks"
+    validations:
+      required: false
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Have you considered any alternative approaches?
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other context, mockups, or examples.
