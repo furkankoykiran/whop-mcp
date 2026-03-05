@@ -84,10 +84,11 @@ async function doFetch<T>(
     }
 
     if (!response.ok) {
-        const errBody = body as Partial<{ message: string; error: string }>;
+        const errBody = body as any;
         const message =
             errBody?.message ??
             errBody?.error ??
+            (typeof body === 'object' ? JSON.stringify(body) : String(body)) ??
             `HTTP ${response.status}: ${response.statusText}`;
         throw new WhopApiError(String(message), response.status, body);
     }
