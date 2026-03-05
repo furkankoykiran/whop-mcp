@@ -27,10 +27,22 @@ if (!process.env["WHOP_API_KEY"]) {
 // ── Create MCP Server ────────────────────────────────────────
 const server = new McpServer({
     name: "whop-mcp",
-    version: "1.0.0",
+    version: "1.0.3",
     description:
         "Community-led MCP server for Whop.com Company API. " +
         "Manage payments, memberships, products, promo codes, affiliates and more via AI.",
+});
+
+// ── Register core tools ──────────────────────────────────────
+server.tool("ping", "Check server connectivity and uptime", {}, async () => {
+    return {
+        content: [
+            {
+                type: "text",
+                text: `pong (v1.0.3) - Server is healthy and responsive.`,
+            },
+        ],
+    };
 });
 
 // ── Register all tool domains ────────────────────────────────

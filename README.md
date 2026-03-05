@@ -1,13 +1,15 @@
 # whop-mcp
 
 <div align="center">
+  <img src="./assets/social_preview.png" alt="whop-mcp Social Preview" width="640" />
+  <br />
   <a href="https://www.npmjs.com/package/whop-mcp">
     <img src="https://img.shields.io/npm/v/whop-mcp?color=blue&style=for-the-badge" alt="NPM Version" />
   </a>
   <a href="https://www.npmjs.com/package/whop-mcp">
     <img src="https://img.shields.io/npm/dt/whop-mcp?color=green&style=for-the-badge" alt="NPM Downloads" />
   </a>
-  <a href="./LICENSE">
+  <a href="https://github.com/furkankoykiran/whop-mcp/blob/main/LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge" alt="License: MIT" />
   </a>
 </div>
