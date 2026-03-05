@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 Whop API Documentation
+    url: https://dev.whop.com/api-reference
+    about: Official Whop API reference docs
+  - name: 💬 Whop Community Discord
+    url: https://discord.gg/whop
+    about: For general Whop.com questions and community support
+  - name: 🔐 Security Vulnerability
+    url: mailto:furkankoykiran@gmail.com
+    about: Please report security vulnerabilities privately via email
