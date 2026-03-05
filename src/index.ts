@@ -39,7 +39,7 @@ server.tool("ping", "Check server connectivity and uptime", {}, async () => {
         content: [
             {
                 type: "text",
-                text: `pong (v1.1.0) - Server is healthy and responsive.`,
+                text: `pong (v1.1.1) - Server is healthy and responsive.`,
             },
         ],
     };

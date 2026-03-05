@@ -3,7 +3,7 @@
 // ============================================================
 
 import { z } from "zod";
-import { whopGet, formatApiError } from "../client.js";
+import { whopGet, formatApiError, safeDate } from "../client.js";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { WhopUser, Review, PaginatedResponse } from "../types.js";
 
@@ -28,7 +28,7 @@ export function registerUserReviewTools(server: McpServer): void {
                     `- Twitter: ${user.twitter_username ? `@${user.twitter_username}` : "N/A"}`,
                     `- Discord ID: ${user.discord_id ?? "N/A"}`,
                     `- Profile: ${user.profile_pic_url ?? "N/A"}`,
-                    `- Joined: ${new Date(user.created_at * 1000).toISOString()}`,
+                    `- Joined: ${safeDate(user.created_at)}`,
                 ].join("\n");
                 return { content: [{ type: "text", text }] };
             } catch (err) {
@@ -116,11 +116,11 @@ export function registerUserReviewTools(server: McpServer): void {
 
                 const stars = (rating: number) => "⭐".repeat(rating);
                 const lines = [
-                    `**Reviews** (Page ${data.pagination.current_page}/${data.pagination.total_pages}, Total: ${data.pagination.total_count})`,
+                    `**Reviews** (Page ${data.pagination.current_page}/${data.pagination.total_page}, Total: ${data.pagination.total_count})`,
                     "",
                     ...reviews.map(
                         (r) =>
-                            `- ${stars(r.rating)} | User: \`${r.user_id}\`${r.username ? ` (@${r.username})` : ""} | Product: \`${r.product_id}\` | "${r.message ?? "No comment"}" | ${new Date(r.created_at * 1000).toISOString()}`
+                            `- ${stars(r.rating)} | User: \`${r.user_id}\`${r.username ? ` (@${r.username})` : ""} | Product: \`${r.product_id}\` | "${r.message ?? "No comment"}" | ${safeDate(r.created_at)}`
                     ),
                 ];
 

@@ -3,7 +3,7 @@
 //  Wraps fetch with auth, error handling, and rate-limit logic
 // ============================================================
 
-const BASE_URL = "https://api.whop.com/api/v1";
+const BASE_URL = "https://api.whop.com/api/v2";
 const DEFAULT_TIMEOUT_MS = 30_000;
 const MAX_RETRIES = 3;
 const RETRY_BASE_DELAY_MS = 1_000;
@@ -148,10 +148,23 @@ export function formatApiError(err: unknown): string {
         if (err.status === 404) {
             return `Not found – the requested resource does not exist: ${err.message}`;
         }
-        return `Whop API error (${err.status}): ${err.message}`;
+        return `Whop API error (${err.status}): ${err.message}${err.body ? ` | Body: ${JSON.stringify(err.body)}` : ""}`;
     }
     if (err instanceof Error) {
         return `Error: ${err.message}`;
     }
     return `Unknown error: ${String(err)}`;
+}
+export function safeDate(val: any): string {
+    if (val === undefined || val === null || val === "") return "N/A";
+    const num = Number(val);
+    if (isNaN(num)) return `[Invalid Date: ${val}]`;
+
+    try {
+        const d = new Date(num * 1000);
+        if (isNaN(d.getTime()) || d.getTime() === 0) return `[Invalid Date: ${val}]`;
+        return d.toISOString();
+    } catch (e) {
+        return `[Invalid Date: ${val}]`;
+    }
 }

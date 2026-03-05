@@ -3,9 +3,10 @@
 // ============================================================
 
 import { z } from "zod";
-import { whopGet, whopPost, whopPatch, whopDelete, formatApiError } from "../client.js";
+import { whopGet, whopPost, whopPatch, whopDelete, formatApiError, safeDate } from "../client.js";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { Product, Plan, PaginatedResponse } from "../types.js";
+
 
 export function registerProductTools(server: McpServer): void {
     // ── list_products ────────────────────────────────────────
@@ -29,7 +30,7 @@ export function registerProductTools(server: McpServer): void {
                 const products = data.data;
 
                 const lines = [
-                    `**Products** (Page ${data.pagination.current_page}/${data.pagination.total_pages}, Total: ${data.pagination.total_count})`,
+                    `**Products** (Page ${data.pagination.current_page}/${data.pagination.total_page}, Total: ${data.pagination.total_count})`,
                     "",
                 ];
 
@@ -39,7 +40,7 @@ export function registerProductTools(server: McpServer): void {
                         `- Visibility: \`${p.visibility}\` | Headless: ${p.headless}`,
                         `- Slug: ${p.slug ?? "N/A"}`,
                         `- Plans: ${p.plans?.length ?? 0} | Experiences: ${p.experiences?.length ?? 0}`,
-                        `- Created: ${new Date(p.created_at * 1000).toISOString()}`,
+                        `- Created: ${safeDate(p.created_at)}`,
                         ""
                     );
                 }
@@ -63,16 +64,19 @@ export function registerProductTools(server: McpServer): void {
         },
         async ({ product_id }) => {
             try {
-                const p = await whopGet<Product>(`/products/${product_id}?expand=plans,experiences`);
+                const p = await whopGet<Product>(`/products/${product_id}`);
 
-                const planLines = (p.plans ?? []).map(
-                    (pl) =>
-                        `  - \`${pl.id}\` | ${pl.billing_period} | ${(pl.renewal_price / 100).toFixed(2)} ${pl.currency.toUpperCase()} | Visibility: ${pl.visibility}`
-                );
+                const planLines = (p.plans ?? []).map((pl) => {
+                    if (typeof pl === "string") return `  - \`${pl}\` (ID only)`;
+                    const price = typeof pl.renewal_price === "string" ? parseFloat(pl.renewal_price) : pl.renewal_price;
+                    const curr = (pl.base_currency || pl.currency || "USD").toUpperCase();
+                    return `  - \`${pl.id}\` | ${pl.billing_period ?? "One-time"} | ${(price / 1).toFixed(2)} ${curr} | Visibility: ${pl.visibility}`;
+                });
 
-                const expLines = (p.experiences ?? []).map(
-                    (e) => `  - \`${e.id}\` | Type: ${e.experience_type} | Permission: ${e.permission_level}`
-                );
+                const expLines = (p.experiences ?? []).map((e) => {
+                    if (typeof e === "string") return `  - \`${e}\` (ID only)`;
+                    return `  - \`${e.id}\` | Type: ${e.experience_type} | Permission: ${e.permission_level}`;
+                });
 
                 const text = [
                     `**Product: ${p.name}** (\`${p.id}\`)`,
@@ -81,7 +85,7 @@ export function registerProductTools(server: McpServer): void {
                     `- Company ID: ${p.company_id}`,
                     `- Description: ${p.description ?? "N/A"}`,
                     `- Image: ${p.image ?? "N/A"}`,
-                    `- Created: ${new Date(p.created_at * 1000).toISOString()}`,
+                    `- Created: ${safeDate(p.created_at)}`,
                     "",
                     `**Plans (${p.plans?.length ?? 0}):**`,
                     ...(planLines.length > 0 ? planLines : ["  None"]),
@@ -123,7 +127,7 @@ export function registerProductTools(server: McpServer): void {
                     content: [
                         {
                             type: "text",
-                            text: `✅ Product created!\n- ID: \`${product.id}\`\n- Name: **${product.name}**\n- Visibility: \`${product.visibility}\`\n- Created: ${new Date(product.created_at * 1000).toISOString()}`,
+                            text: `✅ Product created!\n- ID: \`${product.id}\`\n- Name: **${product.name}**\n- Visibility: \`${product.visibility}\`\n- Created: ${safeDate(product.created_at)}`,
                         },
                     ],
                 };
@@ -204,10 +208,11 @@ export function registerProductTools(server: McpServer): void {
                 const lines = [
                     `**Plans for product \`${product_id}\`** (${plans.length} total)`,
                     "",
-                    ...plans.map(
-                        (pl) =>
-                            `- \`${pl.id}\` | ${pl.name ?? "Unnamed"} | ${pl.billing_period} | ${(pl.renewal_price / 100).toFixed(2)} ${pl.currency.toUpperCase()} | Visibility: \`${pl.visibility}\``
-                    ),
+                    ...plans.map((pl) => {
+                        const price = typeof pl.renewal_price === "string" ? parseFloat(pl.renewal_price) : pl.renewal_price;
+                        const curr = (pl.base_currency || pl.currency || "USD").toUpperCase();
+                        return `- \`${pl.id}\` | ${pl.name ?? "Unnamed"} | ${pl.billing_period ?? "One-time"} | ${(price / 1).toFixed(2)} ${curr} | Visibility: \`${pl.visibility}\``;
+                    }),
                 ];
 
                 if (plans.length === 0) lines.push("No plans found for this product.");

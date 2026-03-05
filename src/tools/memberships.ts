@@ -3,7 +3,7 @@
 // ============================================================
 
 import { z } from "zod";
-import { whopGet, whopPost, whopPatch, formatApiError } from "../client.js";
+import { whopGet, whopPost, whopPatch, formatApiError, safeDate } from "../client.js";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { Membership, PaginatedResponse } from "../types.js";
 
@@ -34,11 +34,11 @@ export function registerMembershipTools(server: McpServer): void {
                 const pagination = data.pagination;
 
                 const lines = [
-                    `**Memberships** (Page ${pagination.current_page}/${pagination.total_pages}, Total: ${pagination.total_count})`,
+                    `**Memberships** (Page ${pagination.current_page}/${pagination.total_page}, Total: ${pagination.total_count})`,
                     "",
                     ...memberships.map(
                         (m) =>
-                            `- **${m.id}** | User: ${m.user_id} | Product: ${m.product_id} | Status: \`${m.status}\` | Valid: ${m.valid} | Expires: ${m.expires_at ? new Date(m.expires_at * 1000).toISOString() : "Never"}`
+                            `- **${m.id}** | User: ${m.user_id} | Product: ${m.product_id} | Status: \`${m.status}\` | Valid: ${m.valid} | Expires: ${m.expires_at ? safeDate(m.expires_at) : "Never"}`
                     ),
                 ];
 
@@ -74,9 +74,9 @@ export function registerMembershipTools(server: McpServer): void {
                     `- Quantity: ${m.quantity}`,
                     `- Wallet Address: ${m.wallet_address ?? "N/A"}`,
                     `- Discord Account: ${m.discord_account_id ?? "N/A"}`,
-                    `- Expires At: ${m.expires_at ? new Date(m.expires_at * 1000).toISOString() : "Never"}`,
-                    `- Renewal Period: ${m.renewal_period_start ? new Date(m.renewal_period_start * 1000).toISOString() : "N/A"} → ${m.renewal_period_end ? new Date(m.renewal_period_end * 1000).toISOString() : "N/A"}`,
-                    `- Created: ${new Date(m.created_at * 1000).toISOString()}`,
+                    `- Expires At: ${m.expires_at ? safeDate(m.expires_at) : "Never"}`,
+                    `- Renewal Period: ${m.renewal_period_start ? safeDate(m.renewal_period_start) : "N/A"} → ${m.renewal_period_end ? safeDate(m.renewal_period_end) : "N/A"}`,
+                    `- Created: ${m.created_at ? safeDate(m.created_at) : "N/A"}`,
                     `- Manage URL: ${m.manage_url}`,
                 ].join("\n");
                 return { content: [{ type: "text", text }] };
@@ -127,7 +127,7 @@ export function registerMembershipTools(server: McpServer): void {
                                 `- Membership ID: ${m.id}`,
                                 `- User ID: ${m.user_id}`,
                                 `- Product ID: ${m.product_id}`,
-                                `- Expires At: ${m.expires_at ? new Date(m.expires_at * 1000).toISOString() : "Never"}`,
+                                `- Expires At: ${safeDate(m.expires_at)}`,
                             ].join("\n"),
                         },
                     ],
@@ -157,7 +157,7 @@ export function registerMembershipTools(server: McpServer): void {
                     content: [
                         {
                             type: "text",
-                            text: `✅ Added ${days} free day(s) to membership **${result.id}**.\n- New Expiry: ${result.expires_at ? new Date(result.expires_at * 1000).toISOString() : "Never"}`,
+                            text: `✅ Added ${days} free day(s) to membership **${result.id}**.\n- New Expiry: ${safeDate(result.expires_at)}`,
                         },
                     ],
                 };
@@ -184,7 +184,7 @@ export function registerMembershipTools(server: McpServer): void {
                     content: [
                         {
                             type: "text",
-                            text: `✅ Membership **${result.id}** has been canceled.\n- Status: \`${result.status}\`\n- Active until: ${result.expires_at ? new Date(result.expires_at * 1000).toISOString() : "N/A"}`,
+                            text: `✅ Membership **${result.id}** has been canceled.\n- Status: \`${result.status}\`\n- Active until: ${result.expires_at ? safeDate(result.expires_at) : "N/A"}`,
                         },
                     ],
                 };

@@ -3,7 +3,7 @@
 // ============================================================
 
 import { z } from "zod";
-import { whopGet, whopPost, formatApiError } from "../client.js";
+import { whopGet, whopPost, formatApiError, safeDate } from "../client.js";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { Payment, PaginatedResponse } from "../types.js";
 
@@ -43,11 +43,11 @@ export function registerPaymentTools(server: McpServer): void {
                 const pagination = data.pagination;
 
                 const lines = [
-                    `**Payments** (Page ${pagination.current_page}/${pagination.total_pages}, Total: ${pagination.total_count})`,
+                    `**Payments** (Page ${pagination.current_page}/${pagination.total_page}, Total: ${pagination.total_count})`,
                     "",
                     ...payments.map(
                         (p) =>
-                            `- **${p.id}** | Status: \`${p.status}\` | Amount: ${(p.amount / 100).toFixed(2)} ${p.currency.toUpperCase()} | Billing: ${p.billing_reason} | Created: ${new Date(p.created_at * 1000).toISOString()}`
+                            `- **${p.id}** | Status: \`${p.status}\` | Amount: ${(p.amount / 100).toFixed(2)} ${p.currency.toUpperCase()} | Billing: ${p.billing_reason} | Created: ${safeDate(p.created_at)}`
                     ),
                 ];
 
@@ -86,9 +86,9 @@ export function registerPaymentTools(server: McpServer): void {
                     `- Product ID: ${payment.product_id ?? "N/A"}`,
                     `- Plan ID: ${payment.plan_id ?? "N/A"}`,
                     `- Membership ID: ${payment.membership_id ?? "N/A"}`,
-                    `- Created: ${new Date(payment.created_at * 1000).toISOString()}`,
-                    `- Paid At: ${payment.paid_at ? new Date(payment.paid_at * 1000).toISOString() : "N/A"}`,
-                    `- Refunded At: ${payment.refunded_at ? new Date(payment.refunded_at * 1000).toISOString() : "N/A"}`,
+                    `- Created: ${safeDate(payment.created_at)}`,
+                    `- Paid At: ${safeDate(payment.paid_at)}`,
+                    `- Refunded At: ${safeDate(payment.refunded_at)}`,
                 ].join("\n");
                 return { content: [{ type: "text", text }] };
             } catch (err) {
