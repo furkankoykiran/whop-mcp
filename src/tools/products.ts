@@ -25,7 +25,6 @@ export function registerProductTools(server: McpServer): void {
             try {
                 const data = await whopGet<PaginatedResponse<Product>>("/products", {
                     ...args,
-                    expand: "plans,experiences",
                 });
                 const products = data.data;
 
