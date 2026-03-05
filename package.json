@@ -1,6 +1,6 @@
 {
   "name": "whop-mcp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Community-led MCP server for Whop.com Company API — manage payments, memberships, products, promo codes, and more via AI.",
   "author": "Community Contributors",
   "license": "MIT",
