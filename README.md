@@ -3,11 +3,11 @@
 <div align="center">
   <img src="./assets/social_preview.png" alt="whop-mcp Social Preview" width="640" />
   <br />
-  <a href="https://www.npmjs.com/package/whop-mcp">
-    <img src="https://img.shields.io/npm/v/whop-mcp?color=blue&style=for-the-badge" alt="NPM Version" />
+  <a href="https://www.npmjs.com/package/@furkankoykiran/whop-mcp">
+    <img src="https://img.shields.io/npm/v/@furkankoykiran/whop-mcp?color=blue&style=for-the-badge" alt="NPM Version" />
   </a>
-  <a href="https://www.npmjs.com/package/whop-mcp">
-    <img src="https://img.shields.io/npm/dt/whop-mcp?color=green&style=for-the-badge" alt="NPM Downloads" />
+  <a href="https://www.npmjs.com/package/@furkankoykiran/whop-mcp">
+    <img src="https://img.shields.io/npm/dt/@furkankoykiran/whop-mcp?color=green&style=for-the-badge" alt="NPM Downloads" />
   </a>
   <a href="https://github.com/furkankoykiran/whop-mcp/blob/main/LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge" alt="License: MIT" />
@@ -32,7 +32,7 @@ A community-built **Model Context Protocol (MCP) server** for the [Whop.com](htt
 ### Install in VS Code
 Install the whop-mcp server in VS Code with one click:
 
-[<img alt="Install in VS Code" src="https://img.shields.io/badge/VS_Code-Install_Server-0098FF?style=for-the-badge&logo=visualstudiocode&logoColor=white" />](https://insiders.vscode.dev/redirect?url=vscode%3Amcp%2Finstall%3F%7B%22name%22%3A%22whop%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22whop-mcp%22%5D%2C%22env%22%3A%7B%22WHOP_API_KEY%22%3A%22YOUR_WHOP_API_KEY_HERE%22%7D%7D)
+[<img alt="Install in VS Code" src="https://img.shields.io/badge/VS_Code-Install_Server-0098FF?style=for-the-badge&logo=visualstudiocode&logoColor=white" />](https://insiders.vscode.dev/redirect?url=vscode%3Amcp%2Finstall%3F%7B%22name%22%3A%22whop%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22%40furkankoykiran%2Fwhop-mcp%22%5D%2C%22env%22%3A%7B%22WHOP_API_KEY%22%3A%22YOUR_WHOP_API_KEY_HERE%22%7D%7D)
 
 > **Note:** Replace `YOUR_WHOP_API_KEY_HERE` with your actual Company API key from the Whop Developer Dashboard.
 
@@ -47,7 +47,7 @@ Add to your Claude Desktop config file:
   "mcpServers": {
     "whop": {
       "command": "npx",
-      "args": ["-y", "whop-mcp"],
+      "args": ["-y", "@furkankoykiran/whop-mcp"],
       "env": {
         "WHOP_API_KEY": "YOUR_WHOP_API_KEY_HERE"
       }
