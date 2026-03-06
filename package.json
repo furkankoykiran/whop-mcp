@@ -1,9 +1,6 @@
 {
   "name": "@furkankoykiran/whop-mcp",
   "version": "1.1.1",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
   "description": "Community-led MCP server for Whop.com Company API — manage payments, memberships, products, promo codes, and more via AI.",
   "author": "Community Contributors",
   "license": "MIT",
